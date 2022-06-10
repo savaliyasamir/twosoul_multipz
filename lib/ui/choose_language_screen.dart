@@ -54,10 +54,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: [
                    CommonTextView(e,fontSize: 16.sp,fontFamily: displayRegular,color: Colors.white),
-                   Container(
+                   SizedBox(
                      height: 4.vh,
                      width: 8.vw,
-
                      child: Image.asset(selectedLanguage == e ?icSelectedLanguage:icFreeUnselected),
                    ),
                  ],

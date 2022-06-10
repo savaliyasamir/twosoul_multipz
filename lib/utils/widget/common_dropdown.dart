@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 
+// ignore: must_be_immutable
 class CommonDropDownButton extends StatefulWidget{
  String value;
  List<String> item;
@@ -19,7 +20,7 @@ class _CommonDropDownButtonState extends State<CommonDropDownButton> {
     return     Container(
       alignment: Alignment.center,
       padding: EdgeInsets.only(left: 4.vw,right: 4.vw),
-      height: 6.vh,
+      height: 13.vw,
       decoration: BoxDecoration(
           color: darkGreyColor,
           borderRadius: BorderRadius.circular(10)
@@ -27,7 +28,7 @@ class _CommonDropDownButtonState extends State<CommonDropDownButton> {
       child: DropdownButton(
         dropdownColor: darkGreyColor,
         iconEnabledColor:yellowColor,
-        style: TextStyle(color: white50,fontSize: 14.sp,fontFamily: 'SfUiDisplayRegular'),
+        style: TextStyle(color: white50,fontSize: 14.sp,fontFamily: displayRegular),
         isExpanded: true,
         value: widget.value,
         icon:  Icon(Icons.keyboard_arrow_down,size: 6.vw,),

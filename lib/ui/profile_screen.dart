@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Container(
                     margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
                     clipBehavior: Clip.antiAlias,
-                    height: 20.vh,
+                    height: 40.vw,
                     width: 40.vw,
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: pinkColor),
                     child: Image.asset('assets/image/Rectangle 129.png',fit: BoxFit.cover,),
@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         children: [
                           Container(
-                            height: 9.vh,
+                            height: 18.vw,
                             width: 18.vw,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
@@ -69,8 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           alignment: Alignment.bottomRight,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(top: 6.vh),
-                              height: 11.vh,
+                              margin: EdgeInsets.only(top: 12.vw),
+                              height: 22.vw,
                               width: 22.vw,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(80),
@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 0.5.vh),
-                              height: 3.vh,
+                              height: 6.vw,
                               width: 6.vw,
                               child: Image.asset(icAddPhoto),
                             ),
@@ -100,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Container(
                             padding: EdgeInsets.all(5.5.vw),
-                            height: 9.vh,
+                            height: 18.vw,
                             width: 18.vw,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   padding: EdgeInsets.only(left: 4.vw,right: 4.vw),
                   margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
-                  height: 10.vh,
+                  height: 20.vw,
                   decoration: BoxDecoration(
                     color: yellowColor,
                     borderRadius: BorderRadius.circular(10),
@@ -158,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          },
                          child: Container(
                            padding: EdgeInsets.all(5.vw),
-                           height: 9.vh,
+                           height: 18.vw,
                            width: 18.vw,
                            decoration: const BoxDecoration(
                              image: DecorationImage(
@@ -197,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: Container(
                             padding: EdgeInsets.all(5.vw),
-                            height: 8.5.vh,
+                            height: 18.vw,
                             width: 18.vw,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
@@ -236,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: Container(
                             padding: EdgeInsets.all(4.vw),
-                            height: 9.vh,
+                            height: 18.vw,
                             width: 18.vw,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
@@ -263,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Container(
                           padding: EdgeInsets.all(4.vw),
-                          height: 9.vh,
+                          height: 18.vw,
                           width: 18.vw,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
@@ -288,7 +288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: twoSoulFree.map((e) => Row(
                     children: [
                       Container(
-                        height: 3.vh,
+                        height: 6.vw,
                         width: 6.vw,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -310,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: twoSoulPremium.map((e) => Row(
                     children: [
                       Container(
-                        height: 3.vh,
+                        height: 6.vw,
                         width: 6.vw,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -341,7 +341,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           content: Container(
             padding: EdgeInsets.all(4.vw),
-            height: 60.vh,
+            height: 120.vw,
             width: 100.vw,
             decoration: BoxDecoration(
                 color: backGroundColor,
@@ -351,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(icon,height: 7.vh),
+                Image.asset(icon,height: 14.vw),
                 CommonTextView(title,fontSize: 18.sp,fontFamily: displayMedium,color: Colors.white),
                 CommonTextView(subTitle,color: white50,fontFamily: displayRegular,fontSize: 14.sp,),
                 Wrap(
@@ -364,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           });
                         },
                         child: Container(
-                            height: 11.vh,
+                            height: 12.vh,
                             width: 25.vw,
                             decoration:  BoxDecoration(
                               border:e == selected ? const Border(

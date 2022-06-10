@@ -49,7 +49,7 @@ class _ChooseModeScreenState extends State<ChooseModeScreen> {
               },
               child: Container(
                 padding: EdgeInsets.all(4.vw),
-                height: 12.vh,
+
                 decoration: BoxDecoration(
                     color: darkGreyColor,
                     borderRadius: BorderRadius.circular(10)

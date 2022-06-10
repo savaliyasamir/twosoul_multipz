@@ -34,7 +34,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const FilterScreen()));
                   },
-                  child: Image.asset(icFilter,height: 1.5.vh,)),
+                  child: Image.asset(icFilter,height: 3.5.vw,)),
             ],
           ),
         SizedBox(
@@ -114,7 +114,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   children: [
                     Container(
                       clipBehavior: Clip.antiAlias,
-                      height: 13.vh,
+                      height: 27.vw,
                       width: 27.vw,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -129,7 +129,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             children: [
                               Container(
                                 margin: const EdgeInsets.all(5),
-                                height: 2.vh,
+                                height: 4.vw,
                                 width: 8.vw,
                                 decoration: BoxDecoration(
                                     color: pinkColor,

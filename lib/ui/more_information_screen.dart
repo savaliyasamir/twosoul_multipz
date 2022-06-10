@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/ui/bottom_bar.dart';
@@ -54,6 +53,7 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                       fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
                   ),
                   CommonTextField(hintText: name, controller: nameController),
+                  ///gender selection
                   CommonTextView(gender,fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular),
                   CommonDropDownButton(
                       item: genderList,
@@ -63,6 +63,7 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                         });
                       },
                       value: selectedGender),
+                  ///sexuality selection
                   CommonTextView(
                     sexuality,
                       fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
@@ -75,6 +76,7 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                         });
                       },
                       value: selectedSexuality),
+                  ///Age slider
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -93,6 +95,7 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                       _ageRangeValue = value;
                     });
                   }),
+                  ///Height slider
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -112,19 +115,22 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                       _heightRangeValue= value;
                     });
                   }),
-                  CommonTextView(relationshipStatus,fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular),
+                  ///select Relation ship status drop down
+                  CommonTextView(relationshipStatus,fontSize: 14.sp,fontFamily: raidProRegular),
                   CommonDropDownButton(item: relationshipStatusList, onChanged: (String? newValue){
                     setState(() {
                       selectedRelationshipStatus = newValue!;
                     });
                   }, value: selectedRelationshipStatus),
-                  CommonTextView(religion,fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular),
+                  ///select Religion drop down
+                  CommonTextView(religion,fontSize: 14.sp,fontFamily: raidProRegular),
                   CommonDropDownButton(item: religionList, onChanged: (String? newValue){
                     setState(() {
                       selectedReligion = newValue!;
                     });
                   }, value: selectedReligion),
-                  CommonTextView(lookingFor,fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular),
+                  ///select Looking for tab button
+                  CommonTextView(lookingFor,fontSize: 14.sp,fontFamily: raidProRegular),
                   Theme(
                     data: Theme.of(context).copyWith(
                       highlightColor: Colors.transparent,
@@ -137,22 +143,23 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                           color: darkGreyColor,
                           borderRadius: BorderRadius.circular(10)
                       ),
-                      child: const DefaultTabController(
+                      child:  DefaultTabController(
                         length: 3, child:  TabBar(
-                        unselectedLabelStyle: TextStyle(color: Colors.white),
+                        unselectedLabelStyle: const TextStyle(color: Colors.white),
                         indicatorSize: TabBarIndicatorSize.tab,
-                        indicator: BoxDecoration(
+                        indicator: const BoxDecoration(
                             color: yellowColor),
                         unselectedLabelColor: Colors.white,
                         tabs: <Widget>[
                           Tab(
-                            icon: Text('Friendship'),
+                            icon: CommonTextView('Friendship',fontFamily: displayMedium),
+                          ),
+
+                          Tab(
+                            icon: CommonTextView('Date',fontFamily: displayMedium),
                           ),
                           Tab(
-                            icon: Text('Date'),
-                          ),
-                          Tab(
-                            icon: Text('Relationship'),
+                            icon: CommonTextView('Relationship',fontFamily: displayMedium),
                           ),
                         ],
                       ),),
@@ -160,7 +167,7 @@ class _MoreInformationScreenState extends State<MoreInformationScreen> {
                   ),
                   SizedBox(height: 3.vh,),
                   CommonButton(btnText: btnDone,onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomBar()));
+                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomBar()), (route) => false);
                   },),
                   SizedBox(height: 1.vh,),
                 ],

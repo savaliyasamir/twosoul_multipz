@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/ui/choose_language_screen.dart';
+import 'package:twosoul_multipz/ui/sign_in_out/google.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
 
@@ -37,10 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
            CommonTextView(loremLpsum,textAlign: TextAlign.center,fontFamily:displayRegular, color: white70,fontSize: 14.sp),
             const Spacer(),
+            /// sign-in with google
             loginButton(icGoogle, btnTextLoginWithGoogle, lightGreyColor,
                backGroundColor, () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ChooseLanguageScreen()));
+              signInWithGoogle().then((user){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ChooseLanguageScreen()));
+              });
                 }),
+            /// sign-in with apple
             loginButton(icApple, btnTextLoginWithApple, Colors.transparent,
                 Colors.white, () {}),
             CommonTextView(byUsingUpYou,color: white70,fontSize: 12.sp,fontFamily: displayRegular,textAlign: TextAlign.center,),
@@ -49,11 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
   Widget loginButton(icon, btnText, btnColor, textColor, onPressed) {
     return Container(
       margin: EdgeInsets.only(bottom: 2.vh),
       height: 6.vh,
+      // ignore: deprecated_member_use
       child: RaisedButton(
           onPressed: onPressed,
           shape: const RoundedRectangleBorder(

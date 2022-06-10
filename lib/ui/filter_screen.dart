@@ -56,7 +56,7 @@ class _FilterScreenState extends State<FilterScreen> {
         Expanded(child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           child: SizedBox(
-            height: 90.vh,
+            height: 100.vh,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     suffixIcon:
-                    Icon(Icons.location_on, color: yellowColor, size: 2.5.vh),
+                    Icon(Icons.location_on, color: yellowColor, size: 5.vw),
                     fillColor: darkGreyColor,
                     filled: true,
                     contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw,top: 1.vh,bottom: 3.vh),
@@ -95,28 +95,28 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   child: Container(
                     clipBehavior: Clip.antiAlias,
-                    height: 6.vh,
+                    height: 14.vw,
                     decoration: BoxDecoration(
                         color: darkGreyColor,
                         borderRadius: BorderRadius.circular(10)
                     ),
-                    child:  const DefaultTabController(
+                    child:   DefaultTabController(
                       length: 3, child:  TabBar(
-                      unselectedLabelStyle: TextStyle(color: Colors.white),
+                      unselectedLabelStyle: const TextStyle(color: Colors.white),
                       labelColor: Colors.white,
                       indicatorSize: TabBarIndicatorSize.tab,
-                      indicator: BoxDecoration(
+                      indicator: const BoxDecoration(
                           color: yellowColor),
                       unselectedLabelColor: Colors.white,
                       tabs: <Widget>[
                         Tab(
-                          icon: Text('Girls'),
+                          icon: CommonTextView('Girls',fontFamily: displayMedium),
                         ),
                         Tab(
-                          icon: Text('Boys'),
+                          icon: CommonTextView('Boys',fontFamily: displayMedium),
                         ),
                         Tab(
-                          icon: Text('Both'),
+                          icon: CommonTextView('Both',fontFamily: displayMedium),
                         ),
                       ],
                     ),),
@@ -208,29 +208,29 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   child: Container(
                     clipBehavior: Clip.antiAlias,
-                    height: 6.vh,
+                    height: 12.vw,
                     decoration: BoxDecoration(
                         color: darkGreyColor,
                         borderRadius: BorderRadius.circular(10)
                     ),
-                    child:  const DefaultTabController(
+                    child:   DefaultTabController(
                       length: 3, child:  TabBar(
-                      unselectedLabelStyle: TextStyle(color: Colors.white),
+                      unselectedLabelStyle: const TextStyle(color: Colors.white),
                       labelColor: Colors.white,
                       indicatorSize: TabBarIndicatorSize.tab,
-                      indicator: BoxDecoration(
+                      indicator: const BoxDecoration(
                           color: yellowColor),
                       unselectedLabelColor: Colors.white,
                       tabs: <Widget>[
                         Tab(
-                          icon: Text('Friendship'),
+                          icon: CommonTextView('Friendship',fontFamily: displayMedium),
                         ),
 
                         Tab(
-                          icon: Text('Date'),
+                          icon: CommonTextView('Date',fontFamily: displayMedium),
                         ),
                         Tab(
-                          icon: Text('Relationship'),
+                          icon: CommonTextView('Relationship',fontFamily: displayMedium),
                         ),
                       ],
                     ),),

@@ -26,19 +26,20 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           CommonTextView('Messages',fontFamily: displayMedium,fontSize: 20.sp,),
           Container(
+            alignment: Alignment.center,
             margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
             width: 100.vw,
-            height: 6.vh,
+            height: 12.vw,
             decoration: BoxDecoration(
               color: darkGreyColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
               cursorColor: lightGreyColor,
-              style: const TextStyle(color: white50),
+              style:  TextStyle(color: white50,fontSize: 12.sp),
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search,color: yellowColor),
+                prefixIcon:  Icon(Icons.search,color: yellowColor,size: 5.vw),
                 fillColor: darkGreyColor,
                 filled: true,
                 contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw),
@@ -54,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
           CommonTextView('New matches',fontSize: 18.sp,fontFamily: displayRegular,),
           Container(
             margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
-            height: 20.vh,
+            height: 40.vw,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               scrollDirection: Axis.horizontal,
@@ -101,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
                              height: 15.vw,
                              width: 15.vw,
                              decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(50),
+                                 borderRadius: BorderRadius.circular(100),
                                  border: Border.all(color: pinkColor,width: 0.7.vw)
                              ),
                              child: Container(
@@ -134,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                width: 6.vw,
                                height: 6.vw,
                                decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(15),
+                                   borderRadius: BorderRadius.circular(50),
                                    color: pinkColor
                                ),
                                child: CommonTextView('5'),

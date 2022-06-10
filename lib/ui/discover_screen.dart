@@ -45,7 +45,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   },
                   child: Image.asset(
                     wrapView ? icDisCoverSelected : icMenu,
-                    height: 2.5.vh,
+                    width: 5.vw,
                   )),
               Column(
                 children: [
@@ -64,13 +64,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   },
                   child: Image.asset(
                     icFilter,
-                    height: 1.5.vh,
+                    height: 3.5.vw,
                   )),
             ],
           ),
-          wrapView
-              ?
-
+          wrapView ?
               ///wrap view
               Expanded(
                   child: SingleChildScrollView(
@@ -87,12 +85,13 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           Container(
                             clipBehavior: Clip.antiAlias,
                             width: 43.vw,
-                            height: 28.vh,
+                            height: 56.vw,
                             decoration: BoxDecoration(
                               color: greyColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Stack(
+                              fit: StackFit.expand,
                               children: [
                                 Image.asset(
                                   'assets/image/Rectangle 129.png',
@@ -164,7 +163,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   ),
                 )
               :
-
               ///swappable stack view
               Stack(
                   alignment: Alignment.bottomCenter,

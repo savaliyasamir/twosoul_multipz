@@ -254,7 +254,7 @@ class _SettingScreenState extends State<SettingScreen> {
             toggleColor: backGroundColor,
             inactiveToggleColor: darkGreyColor,
             inactiveColor: backGroundColor,
-            toggleSize: 12,
+            toggleSize: 3.vw,
             showOnOff: false,
             onToggle: (val) {
               onChanged(val);

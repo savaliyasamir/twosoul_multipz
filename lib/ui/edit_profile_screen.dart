@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
@@ -38,7 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Image.asset(icBackButton,height: 2.vh),
+              child: Image.asset(icBackButton,height: 4.vw),
             ),
             Center(
               child: Stack(
@@ -49,13 +48,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   height: 30.vw,
                   width: 30.vw,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(70),
+                    borderRadius: BorderRadius.circular(100.vw),
                     border: Border.all(color: Colors.white,width: 1.vw),
                   ),
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(70),
+                          borderRadius: BorderRadius.circular(100.vw),
                         ),
                         height: 29.vw,
                         width: 29.vw,
@@ -158,7 +157,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         child: Container(
                           clipBehavior: Clip.antiAlias,
-                          height: 6.vh,
+                          height: 12.vw,
                           decoration: BoxDecoration(
                               color: darkGreyColor,
                               borderRadius: BorderRadius.circular(10)

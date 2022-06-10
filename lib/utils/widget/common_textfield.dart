@@ -13,12 +13,14 @@ class CommonTextField extends StatelessWidget{
     return TextField(
       controller: controller,
       cursorColor: lightGreyColor,
-      style: const TextStyle(color: white50),
+      style:  TextStyle(color: white50,fontSize: 12.sp),
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
+        contentPadding:
+        EdgeInsets.symmetric(vertical: 3.vw, horizontal: 3.vw),
         fillColor: darkGreyColor,
         filled: true,
-        contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw),
+        //   contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw),
         hintText: hintText,
         hintStyle:  TextStyle(color: greyColor,fontSize: 14.sp,fontFamily: 'SfUiDisplayRegular'),
         border: OutlineInputBorder(

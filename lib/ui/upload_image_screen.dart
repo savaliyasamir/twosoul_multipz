@@ -20,7 +20,7 @@ class UploadImageScreen extends StatefulWidget {
 class _UploadImageScreenState extends State<UploadImageScreen> {
   List<File> imageList = [];
 
-
+///get Image into camara
   Future getImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
@@ -28,7 +28,7 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
       Navigator.pop(context);
     });
   }
-
+///get Image into gallery
   Future getGalleryImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
@@ -69,6 +69,7 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
               GestureDetector(
                 onTap: (){
                   if(imageList.length != 5) {
+                    ///show dialog box with camara and gallery option
                     showDialog(
                         context: context, builder: (BuildContext context) {
                       return BackdropFilter(

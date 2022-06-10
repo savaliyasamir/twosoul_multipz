@@ -4,6 +4,12 @@ import 'package:resize/resize.dart';
 import '../ui/choose_mode_screen.dart';
 
 
+/// api constants
+const String baseUrl = 'http://165.232.189.85/two-soul-dating-black-version/public/api/';
+
+
+
+
 ///color
 const Color white70 = Color(0xb3ffffff);
 const Color white50 = Color(0x8affffff);
@@ -34,6 +40,9 @@ const String btnTextLoginWithApple = 'Login with Apple';
 const String icGoogle = 'assets/ic/ic_google.png';
 const String icApple = 'assets/ic/ic_apple.png';
 
+///bottom_bar willPopup
+const String exitApp = 'Exit App';
+const String doYouWantToExit = 'Do you want to exit an App?';
 
 ///Choose Language screen
 const String chooseLanguage = 'Choose Language';
