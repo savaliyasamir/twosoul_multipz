@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/login/login_event.dart';
+import 'package:twosoul_multipz/Network/model/request%20model/login_request.dart';
+import 'package:twosoul_multipz/main.dart';
 import 'package:twosoul_multipz/ui/choose_language_screen.dart';
 import 'package:twosoul_multipz/ui/sign_in_out/google.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+import 'package:twosoul_multipz/utils/widget/error_message.dart';
+
+import '../Network/bloc/login/login_bloc.dart';
+import '../Network/view_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,44 +24,85 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(bottom: 2.vh, left: 4.vw, right: 4.vw),
-        height: 100.vh,
-        width: 100.vw,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(loginBackGround), fit: BoxFit.fill)),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 15.vh,
-            ),
-            Image.asset(
-              icTwoSoul,
-              width: 25.vw,
-            ),
-            CommonTextView(twoSoul,fontSize: 28.sp,color: Colors.white,fontFamily: displayBold),
-            SizedBox(
-              height: 1.vh,
-            ),
-           CommonTextView(loremLpsum,textAlign: TextAlign.center,fontFamily:displayRegular, color: white70,fontSize: 14.sp),
-            const Spacer(),
-            /// sign-in with google
-            loginButton(icGoogle, btnTextLoginWithGoogle, lightGreyColor,
-               backGroundColor, () {
-              signInWithGoogle().then((user){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ChooseLanguageScreen()));
-              });
-                }),
-            /// sign-in with apple
-            loginButton(icApple, btnTextLoginWithApple, Colors.transparent,
-                Colors.white, () {}),
-            CommonTextView(byUsingUpYou,color: white70,fontSize: 12.sp,fontFamily: displayRegular,textAlign: TextAlign.center,),
-          ],
-        ),
-      ),
+      body: BlocConsumer<LoginBloc, ViewState>(
+        listener: (context, state){
+          if(state is LoadedState) {
+            getStorage.write('LoginToken', state.loginResponse!.token.toString()).then((value) {
+              print(getStorage.read('LoginToken'));
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => const ChooseLanguageScreen()));
+            }
+            );
+          }
+        },
+          builder: (BuildContext c, ViewState state) {
+        return Container(
+          padding: EdgeInsets.only(bottom: 2.vh, left: 4.vw, right: 4.vw),
+          height: 100.vh,
+          width: 100.vw,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(loginBackGround), fit: BoxFit.fill)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15.vh,
+              ),
+              Image.asset(
+                icTwoSoul,
+                width: 25.vw,
+              ),
+              CommonTextView(twoSoul,
+                  fontSize: 28.sp,
+                  color: Colors.white,
+                  fontFamily: displayBold),
+              SizedBox(
+                height: 1.vh,
+              ),
+              CommonTextView(loremLpsum,
+                  textAlign: TextAlign.center,
+                  fontFamily: displayRegular,
+                  color: white70,
+                  fontSize: 14.sp),
+              const Spacer(),
+
+              /// sign-in with google
+              loginButton(icGoogle, btnTextLoginWithGoogle, lightGreyColor,
+                  backGroundColor, () {
+                signInWithGoogle().then((user) {
+                  context.read<LoginBloc>().add(FetchData(LoginRequestModel(
+                      loginType: "1", socialId: user.user.uid)));
+                  if (state is ErrorState) {
+                    final error = state.error;
+                    return ErrorMessage(
+                        error: '${error.message}\nTap to Retry.', callBack: () {});
+                  } else
+                  if (state is LoadingState) {
+                    return const Center(child: CircularProgressIndicator(color: pinkColor,));
+                  } else if (state is Empty) {
+                    return ErrorMessage(error: '${state.msg}', callBack: () {});
+                  }
+
+                });
+              }),
+
+              /// sign-in with apple
+              loginButton(icApple, btnTextLoginWithApple, Colors.transparent,
+                  Colors.white, () {}),
+              CommonTextView(
+                byUsingUpYou,
+                color: white70,
+                fontSize: 12.sp,
+                fontFamily: displayRegular,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
+
   Widget loginButton(icon, btnText, btnColor, textColor, onPressed) {
     return Container(
       margin: EdgeInsets.only(bottom: 2.vh),
@@ -73,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: 3.vw,
               ),
-              CommonTextView(btnText,fontSize: 16.sp, color: textColor,fontFamily: displayMedium),
+              CommonTextView(btnText,
+                  fontSize: 16.sp, color: textColor, fontFamily: displayMedium),
             ],
           )),
     );

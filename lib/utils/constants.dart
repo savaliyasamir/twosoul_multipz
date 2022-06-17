@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
 
-import '../ui/choose_mode_screen.dart';
 
 
 /// api constants
 const String baseUrl = 'http://165.232.189.85/two-soul-dating-black-version/public/api/';
-
+const String loginUserApiUrl = 'loginUser';
+const String getLanguageApiUrl = 'getActiveLanguages';
+const String setLanguageApiUrl = 'setLanguages';
+const String userMultiImageApiUrl = 'userMultiImage';
+const String getSexualityApiUrl = 'getSexuality';
+const String getReligionApiUrl = 'getReligion';
+const String getCountryApiUrl = 'getCountry';
+const String getStateApiUrl = 'getState?country_id=';
+const String getCityApiUrl = 'getCity?';
+const String createProfileApiUrl = 'createProfile';
 
 
 
@@ -47,8 +55,8 @@ const String doYouWantToExit = 'Do you want to exit an App?';
 ///Choose Language screen
 const String chooseLanguage = 'Choose Language';
 const String btnContinue = 'Continue';
-List language = ['Spanise','English','French'];
-String selectedLanguage = 'Spanise';
+
+String selectedLanguage = 'english';
 const icSelectedLanguage = 'assets/ic/ic_selectedLanguage.png';
 
 ///upload_image_screen
@@ -64,6 +72,9 @@ const String icLocation = 'assets/ic/ic_location.png';
 const String enableLocation = 'Enable Your Location';
 const String chooseYourLocation = 'Choose your location to start finding the\nrequest around you.';
 const String btnEnableLocation = 'Enable Location';
+const String locationDisable = 'Location services are disabled.';
+const String locationDenied = 'Location permissions are denied';
+const String locationPermanentlyDenied = 'Location permissions are permanently denied, we cannot request permissions.';
 
 ///more_information_screen
 const String name = 'Name';
@@ -77,11 +88,16 @@ const String lookingFor = 'Looking For';
 const String btnDone = 'Done';
 const String cm = 'cm';
 const List<String> lookingForList = ['Friendship','Date','Relationship'];
-const  List<String> genderList = ['Man',  'Woman',  'Other',];
+const  List<String> genderList = ['Male',  'Female',  'Both',];
 const  List<String> sexualityList = ['Homosexual',  'Straight',  'Gay','Queer'];
 const Color sliderTrackColor = Color(0xff999999);
-const List<String> relationshipStatusList = ['Single','Married'];
+const List<String> relationshipStatusList = ['single','married','engaged','separated','divorced','other'];
 const List<String> religionList = ['Hindu','Sikh','Parsi','Jain','Muslim','Christianity','Not Important'];
+const String city = 'City';
+const String state = 'State';
+const String selectState = 'Select State';
+const String country = 'Country';
+const String select = 'Select';
 
 ///bottom_bar
 const String bottomBackGroundImage = 'assets/image/bottom_image.png';

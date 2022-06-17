@@ -27,7 +27,6 @@ class _CommonRangeSliderState extends State<CommonRangeSlider> {
         overlayColor: Colors.transparent,
         trackHeight: 1.vw,
         rangeThumbShape:  const RoundRangeSliderThumbShape(enabledThumbRadius: 7),
-
       ),
       child: RangeSlider(
         values: widget.value,

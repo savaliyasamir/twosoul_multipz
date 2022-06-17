@@ -3,9 +3,10 @@ import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
+import 'package:twosoul_multipz/utils/widget/common_dob_field.dart';
 import 'package:twosoul_multipz/utils/widget/common_dropdown.dart';
-import 'package:twosoul_multipz/utils/widget/common_range_slider.dart';
-import 'package:twosoul_multipz/utils/widget/common_textfield.dart';
+import 'package:twosoul_multipz/utils/widget/common_slider.dart';
+import 'package:twosoul_multipz/utils/widget/common_textField.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
 
 
@@ -18,13 +19,18 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameController = TextEditingController();
-  RangeValues _ageRangeValue = const RangeValues(20, 30);
-  RangeValues _heightRangeValue = const RangeValues(156, 175);
+  FocusNode dd = FocusNode();
+  FocusNode mm = FocusNode();
+  FocusNode yy = FocusNode();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController monthController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  double _heightRangeValue = 101;
   late TabController tabController;
   FocusNode? nameFocusNode;
-  String selectedGender = 'Woman';
+  String selectedGender = 'Female';
   String selectedSexuality = 'Homosexual';
-  String selectedRelationshipStatus = 'Single';
+  String selectedRelationshipStatus = 'single';
   String   selectedReligion = 'Christianity';
   bool isSelected = false;
   @override
@@ -64,7 +70,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     ]
               ),
             ),
-            SizedBox(height: 5.vh,),
+            SizedBox(height: 5.vh),
             Expanded(
               child: SingleChildScrollView(
                 physics:  const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -100,24 +106,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             });
                           },
                           value: selectedSexuality),
+                      ///Age TextField
+                      CommonTextView(age,fontFamily: raidProRegular,fontSize: 14.sp),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CommonTextView(
-                              age,
-                              fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
+                          DOBTextField(
+                            focusNode: dd,
+                            onChanged: (value){
+                              if(dateController.text.length == 2){
+                                FocusScope.of(context).requestFocus(mm);
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                            maxLength: 2,
+                            hintText: 'DD',
+                            controller: dateController,
                           ),
-                          CommonTextView('${_ageRangeValue.start.toInt()} - ${_ageRangeValue.end.toInt()}      ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+                          DOBTextField(
+                            focusNode: mm,
+                            onChanged: (value){
+                              if(monthController.text.length == 2){
+                                FocusScope.of(context).requestFocus(yy);
+                              }else if(monthController.text.isEmpty){
+                                FocusScope.of(context).requestFocus(dd);
+                              }
+                            },
+                            textInputAction: TextInputAction.next,
+                            maxLength: 2,
+                            hintText: 'MM',
+                            controller: monthController,
+                          ), DOBTextField(
+                            focusNode: yy,
+                            onChanged: (value){
+                              if(yearController.text.length == 4){
+                                yy.unfocus();
+                              }else if(yearController.text.isEmpty){
+                                FocusScope.of(context).requestFocus(mm);
+                              }
+                            },
+                            textInputAction: TextInputAction.done,
+                            maxLength: 4,
+                            hintText: 'YYYY',
+                            controller: yearController,
+                          ),
                         ],
                       ),
-                      CommonRangeSlider(
-                          min: 10,
-                          max: 50,
-                          value: _ageRangeValue, onChanged: (RangeValues value){
-                        setState(() {
-                          _ageRangeValue = value;
-                        });
-                      }),
+                      ///Height slider
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -125,18 +160,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               height,
                               fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
                           ),
-                          CommonTextView('${_heightRangeValue.start.toInt()} - ${_heightRangeValue.end.toInt()}cm     ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+                          CommonTextView('${_heightRangeValue.toInt()} cm     ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
 
                         ],
                       ),
-                      CommonRangeSlider(
-                          min: 100,
-                          max: 200,
-                          value: _heightRangeValue, onChanged: (RangeValues value){
+                      CommonSlider(value: _heightRangeValue, onChanged: (value) {
                         setState(() {
-                          _heightRangeValue= value;
+                          _heightRangeValue = value;
                         });
-                      }),
+                      }, max: 0, min: 200),
                       CommonTextView(relationshipStatus,fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular),
                       CommonDropDownButton(item: relationshipStatusList, onChanged: (String? newValue){
                         setState(() {

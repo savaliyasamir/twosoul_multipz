@@ -1,14 +1,20 @@
 
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/ui/enable_location_screen.dart';
+import 'package:twosoul_multipz/ui/more_information_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+import 'package:http/http.dart' as http;
 
 class UploadImageScreen extends StatefulWidget {
   const UploadImageScreen({Key? key}) : super(key: key);
@@ -19,8 +25,23 @@ class UploadImageScreen extends StatefulWidget {
 
 class _UploadImageScreenState extends State<UploadImageScreen> {
   List<File> imageList = [];
+  bool serviceEnabled = false;
+  ///location enable
+  Future<Position> determinePosition() async {
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled) {
+      serviceEnabled = true;
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+  @override
+  void initState() {
+    super.initState();
+      determinePosition();
+  }
 
-///get Image into camara
+
+  ///get Image into camara
   Future getImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
@@ -133,10 +154,13 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
           ),
           SizedBox(height: 13.vh,),
           CommonButton(btnText: btnContinue,onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const EnableLocationScreen()));
+            serviceEnabled ?
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MoreInformationScreen())) :
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const EnableLocationScreen()));
           },),
         ],
       ),
     );
   }
+
 }

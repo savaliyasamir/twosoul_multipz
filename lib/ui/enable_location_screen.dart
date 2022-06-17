@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/ui/more_information_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
@@ -8,8 +8,38 @@ import 'package:twosoul_multipz/utils/widget/common_button.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
 
 
-class EnableLocationScreen extends StatelessWidget {
+class EnableLocationScreen extends StatefulWidget {
   const EnableLocationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<EnableLocationScreen> createState() => _EnableLocationScreenState();
+}
+
+class _EnableLocationScreenState extends State<EnableLocationScreen> {
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.requestPermission();
+    }else{
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const MoreInformationScreen()));
+    }
+
+
+    permission = await Geolocator.checkPermission();
+    permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      await Geolocator.requestPermission();
+    }
+    return await Geolocator.getCurrentPosition();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +63,7 @@ class EnableLocationScreen extends StatelessWidget {
           CommonTextView(chooseYourLocation,textAlign:TextAlign.center,fontSize: 12.sp,fontFamily: displayRegular,color: white50),
           SizedBox(height: 7.vh,),
           CommonButton(btnText: btnEnableLocation,onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MoreInformationScreen()));
+            determinePosition();
           },)
         ],
       ),

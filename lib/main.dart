@@ -4,11 +4,23 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/create_profile/create_profile_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_city/get_city_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_country/get_country_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_language/get_language_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_religion/get_religion_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_sexuality/get_sexuality_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_state/get_state_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/login/login_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/set_language/set_language_bloc.dart';
+import 'package:twosoul_multipz/Network/repository/repository.dart';
 import 'package:twosoul_multipz/ui/login_screen.dart';
 import 'package:twosoul_multipz/ui/no_internet_screen.dart';
-
+final getStorage = GetStorage();
 void main() {
   init();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -21,6 +33,7 @@ void main() {
 Future init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await GetStorage.init();
 }
 
 class MyApp extends StatefulWidget {
@@ -61,16 +74,47 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Resize(builder: () {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme:  ThemeData(
-          primarySwatch: Colors.grey,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) => LoginBloc(repository: LoginRepository()),
         ),
-        home: isInternetConnected ? const LoginScreen() : const NoInternetScreen(),
-      );
-    },);
+        BlocProvider<GetLanguageBloc>(
+          create: (BuildContext context) => GetLanguageBloc(repository: GetLanguageRepository()),
+        ),
+        BlocProvider<SetLanguageBloc>(
+          create: (BuildContext context) => SetLanguageBloc(repository: SetLanguageRepository()),
+        ),
+        BlocProvider<GetSexualityBloc>(
+          create: (BuildContext context) => GetSexualityBloc(repository: GetSexualityRepository()),
+        ),
+        BlocProvider<GetReligionBloc>(
+          create: (BuildContext context) => GetReligionBloc(repository: GetReligionRepository()),
+        ),
+        BlocProvider<GetCountryBloc>(
+          create: (BuildContext context) => GetCountryBloc(repository: GetCountryRepository()),
+        ),
+        BlocProvider<GetStateBloc>(
+          create: (BuildContext context) => GetStateBloc(repository: GetStateRepository()),
+        ),
+        BlocProvider<GetCityBloc>(
+          create: (BuildContext context) => GetCityBloc(repository: GetCityRepository()),
+        ),
+        BlocProvider<CreateProfileBloc>(
+          create: (BuildContext context) => CreateProfileBloc(repository: CreateProfileRepository()),
+        ),
+      ],
+      child: Resize(builder: () {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme:  ThemeData(
+            primarySwatch: Colors.grey,
+          ),
+          home: isInternetConnected ? const LoginScreen() : const NoInternetScreen(),
+        );
+      },),
+    );
   }
 }
 

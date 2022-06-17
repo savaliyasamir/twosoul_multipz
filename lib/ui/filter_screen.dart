@@ -5,7 +5,10 @@ import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
 import 'package:twosoul_multipz/utils/widget/common_dropdown.dart';
 import 'package:twosoul_multipz/utils/widget/common_range_slider.dart';
+import 'package:twosoul_multipz/utils/widget/common_slider.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+
+import '../utils/widget/common_dob_field.dart';
 
 
 ///03-06-2022
@@ -17,6 +20,13 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
+  FocusNode dd = FocusNode();
+  FocusNode mm = FocusNode();
+  FocusNode yy = FocusNode();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController monthController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  double _heightRangeValue = 101;
   TextEditingController locationController = TextEditingController();
   RangeValues distanceValue = const RangeValues(10, 75);
   RangeValues ageValue = const RangeValues(20, 30);
@@ -61,6 +71,7 @@ class _FilterScreenState extends State<FilterScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ///Location TextField
                 CommonTextView(
                   location,
                   fontSize: 14.sp,fontFamily: raidProRegular,
@@ -87,6 +98,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),
                   ),
                 ),
+                ///Interested In
                 CommonTextView(interestedIn,fontSize: 14.sp,fontFamily: raidProRegular,),
                 Theme(
                   data: Theme.of(context).copyWith(
@@ -95,7 +107,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   child: Container(
                     clipBehavior: Clip.antiAlias,
-                    height: 14.vw,
+                    height: 13.vw,
                     decoration: BoxDecoration(
                         color: darkGreyColor,
                         borderRadius: BorderRadius.circular(10)
@@ -122,6 +134,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),),
                   ),
                 ),
+                /// Distance Slider
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -143,47 +156,70 @@ class _FilterScreenState extends State<FilterScreen> {
                     },
                     max: 100,
                     min: 1),
+                ///Age TextField
+                CommonTextView(age,fontFamily: raidProRegular,fontSize: 14.sp),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   CommonTextView(
-                      age,
-                      fontSize: 14.sp,fontFamily: raidProRegular,
+                    DOBTextField(
+                      focusNode: dd,
+                      onChanged: (value){
+                        if(dateController.text.length == 2){
+                          FocusScope.of(context).requestFocus(mm);
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      maxLength: 2,
+                      hintText: 'DD',
+                      controller: dateController,
                     ),
-                    CommonTextView('${ageValue.start.toInt()} - ${ageValue.end.toInt()}      ',
-                        color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+                    DOBTextField(
+                      focusNode: mm,
+                      onChanged: (value){
+                        if(monthController.text.length == 2){
+                          FocusScope.of(context).requestFocus(yy);
+                        }else if(monthController.text.isEmpty){
+                          FocusScope.of(context).requestFocus(dd);
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      maxLength: 2,
+                      hintText: 'MM',
+                      controller: monthController,
+                    ), DOBTextField(
+                      focusNode: yy,
+                      onChanged: (value){
+                        if(yearController.text.length == 4){
+                          yy.unfocus();
+                        }else if(yearController.text.isEmpty){
+                          FocusScope.of(context).requestFocus(mm);
+                        }
+                      },
+                      textInputAction: TextInputAction.done,
+                      maxLength: 4,
+                      hintText: 'YYYY',
+                      controller: yearController,
+                    ),
                   ],
                 ),
-                CommonRangeSlider(
-                    value: ageValue,
-                    onChanged: (RangeValues value) {
-                      setState(() {
-                        ageValue = value;
-                      });
-                    },
-                    max: 50,
-                    min: 10),
+                ///Height slider
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CommonTextView(
-                      height,
-                      fontSize: 14.sp,fontFamily: raidProRegular,
+                        height,
+                        fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
                     ),
-                   CommonTextView(
-                        '${heightValue.start.toInt()} - ${heightValue.end.toInt()}cm      ',
-                       color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+                    CommonTextView('${_heightRangeValue.toInt()} cm     ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+
                   ],
                 ),
-                CommonRangeSlider(
-                    value: heightValue,
-                    onChanged: (RangeValues value) {
-                      setState(() {
-                        heightValue = value;
-                      });
-                    },
-                    max: 200,
-                    min: 100),
+                CommonSlider(value: _heightRangeValue, onChanged: (value) {
+                  setState(() {
+                    _heightRangeValue = value;
+                  });
+                }, max: 0, min: 200),
+                ///Sexuality Drop Down
                 CommonTextView(
                   sexuality,
                   fontSize: 14.sp,fontFamily: raidProRegular,
@@ -196,10 +232,12 @@ class _FilterScreenState extends State<FilterScreen> {
                       });
                     },
                     value: selectedSexuality),
+                ///Religion Drop Down
                 CommonTextView(religion,fontSize: 14.sp,fontFamily: raidProRegular,),
                 CommonDropDownButton(item: religionList, onChanged: (String value){setState(() {
                   selectedReligion = value;
                 });}, value: selectedReligion),
+               ///Looking for
                CommonTextView(lookingFor,fontSize: 14.sp,fontFamily: raidProRegular,),
                 Theme(
                   data: Theme.of(context).copyWith(
@@ -208,7 +246,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   child: Container(
                     clipBehavior: Clip.antiAlias,
-                    height: 12.vw,
+                    height: 13.vw,
                     decoration: BoxDecoration(
                         color: darkGreyColor,
                         borderRadius: BorderRadius.circular(10)
