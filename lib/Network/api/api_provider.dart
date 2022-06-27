@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:twosoul_multipz/Network/api/custom_exception.dart';
 import 'package:twosoul_multipz/main.dart';
+import 'package:twosoul_multipz/ui/upload_image_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 
 
@@ -68,7 +68,7 @@ class ApiProvider {
   Future<dynamic> tokenWithPost(String url, {var body}) async {
     var responseJson;
     var response;
-    var token = getStorage.read('LoginToken');
+    var token =  getStorage.read('LoginToken');
     try {
         response = await http.post(
           Uri.parse(baseUrl + url),
@@ -78,7 +78,8 @@ class ApiProvider {
           },
           body: jsonEncode(body),
         );
-      responseJson = _response(response);
+        responseJson = _response(response);
+      print(responseJson);
 
     } on SocketException {
       throw FetchDataException('No Internet connection');
@@ -86,11 +87,11 @@ class ApiProvider {
     return responseJson;
   }
 
-/*  Future<dynamic> multipartPost(String url) async {
+  Future<dynamic> multipartPost(String url) async {
     var responseJson;
     try {
       var token = getStorage.read('LoginToken');
-      Map<String, String> headers = {"Authorization": "Bearer " + token!,'Content-Type': 'application/json','Accept' : 'application/json'};
+      Map<String, String> headers = {"Authorization": "Bearer " + token,'Content-Type': 'application/json','Accept' : 'application/json'};
       var requestImage = http.MultipartRequest(
         'POST',
         Uri.parse(
@@ -101,7 +102,6 @@ class ApiProvider {
       for (var element in finalImageList) {
         requestImage.files.add(element);
       }
-
       final streamedResponse = await requestImage.send();
       final response = await http.Response.fromStream(streamedResponse);
 
@@ -111,7 +111,7 @@ class ApiProvider {
       throw NoInternetException( "No Internet Connection!" );
     }
     return responseJson;
-  }*/
+  }
 
 
   dynamic _response(http.Response response) {
@@ -139,7 +139,7 @@ class ApiProvider {
         var responseJson = json.decode(response.body.toString());
         return UnauthorisedException(responseJson);
 
-      case 500:
+      case  500:
         var responseJson = json.decode(response.body.toString());
         var error = responseJson["errors"] ?? "";
 

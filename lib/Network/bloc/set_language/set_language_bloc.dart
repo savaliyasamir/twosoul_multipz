@@ -17,10 +17,10 @@ class SetLanguageBloc extends Bloc<SetLanguageEvents,ViewState>
 
   @override
   Stream<ViewState> mapEventToState(SetLanguageEvents event) async* {
-    if (event is FetchData) {
+    if (event is FetchLanguageData) {
       yield  LoadingState();
       try {
-        responseData = await repository.setLanguageList(selectedLanguage: event.selectedLanguage);
+        responseData = await repository.setLanguageList( event.setLanguageRequestModel);
         if(responseData != null){
           yield LoadedState(setLanguageResponseModel: responseData);
         }else{

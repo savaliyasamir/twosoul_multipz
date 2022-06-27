@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/community/community_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/community/community_event.dart';
+import 'package:twosoul_multipz/Network/view_state.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+import 'package:twosoul_multipz/utils/widget/error_message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -12,6 +17,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<CommunityBloc>().add(CommunityEvents.fetchData);
+  }
   List<String> welcomeImages = [
     'assets/image/Rectangle 2.png',
     'assets/image/user_image.png',
@@ -53,31 +64,54 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           CommonTextView('New matches',fontSize: 18.sp,fontFamily: displayRegular,),
-          Container(
-            margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
-            height: 40.vw,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              scrollDirection: Axis.horizontal,
-                itemCount: welcomeImages.length,
-                itemBuilder: (context,index){
+          BlocBuilder<CommunityBloc, ViewState>(
+              builder: (BuildContext context, ViewState state) {
+                if (state is ErrorState) {
+                  final error = state.error;
+                  return ErrorMessage(
+                      error: '${error.message}\nTap to Retry.', callBack: () {});
+                } else
+                if (state is LoadingState) {
+                  return const CustomLoader();
+                } else if (state is Empty) {
+                  return ErrorMessage(error: '${state.msg}', callBack: () {});
+                }
+                if(state is LoadedState){
                   return Container(
-                      margin: EdgeInsets.only(right: 2.vw),
-                    clipBehavior: Clip.antiAlias,
-                    height: 10.vh,
-                    width: 35.vw,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: darkGreyColor
-                    ),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.asset(welcomeImages[index],fit: BoxFit.fill,)
-                      ],
-                    ),
+                    margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
+                    height: 40.vw,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.communityResponseModel!.data!.length,
+                        itemBuilder: (context,index){
+                          return Container(
+                            margin: EdgeInsets.only(right: 2.vw),
+                            clipBehavior: Clip.antiAlias,
+                            height: 10.vh,
+                            width: 35.vw,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: darkGreyColor
+                            ),
+                            child: Image.network(state.communityResponseModel!.data![index].image!.firstWhere((element) => element.isDefault == "1").imagename.toString(),fit: BoxFit.cover,
+                              loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return  const CustomLoader();
+                            },),
+                          );
+                        }),
                   );
-                }),
+                }
+              return Container(
+                margin: EdgeInsets.only(top: 2.vh,bottom: 2.vh),
+                height: 40.vw,
+                color: darkGreyColor,
+              );
+            }
           ),
           CommonTextView('Conversation',fontFamily: displayRegular,fontSize: 18.sp,),
          SizedBox(height: 2.vh),
@@ -124,7 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                              CommonTextView('Hello how are you',fontFamily: displayRegular,color: white50,),
                            ],
                          ),
-                         Spacer(),
+                         const Spacer(),
                          Column(
                            mainAxisAlignment: MainAxisAlignment.center,
                            children: [

@@ -5,6 +5,8 @@
 //     final createProfileResponseModel = createProfileResponseModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:twosoul_multipz/Network/model/response%20model/common_model/firebase_Response_Model.dart';
+
 import 'common_model/user_data_model.dart';
 
 CreateProfileResponseModel createProfileResponseModelFromJson(String str) => CreateProfileResponseModel.fromJson(json.decode(str));
@@ -17,11 +19,11 @@ class CreateProfileResponseModel {
     this.message,
   });
 
-  UserData? data;
+  FirebaseUserModel? data;
   String? message;
 
   factory CreateProfileResponseModel.fromJson(Map<String, dynamic> json) => CreateProfileResponseModel(
-    data: UserData.fromJson(json["data"]),
+    data: FirebaseUserModel.fromJson(json["data"]),
     message: json["message"],
   );
 

@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/filter_%20data/filter_data_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/filter_%20data/filter_data_event.dart';
+import 'package:twosoul_multipz/Network/bloc/get_religion/get_religion_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/get_sexuality/get_sexuality_bloc.dart';
+import 'package:twosoul_multipz/Network/model/request%20model/filter_data_request_model.dart';
+import 'package:twosoul_multipz/Network/view_state.dart';
+import 'package:twosoul_multipz/ui/bottom_bar.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
-import 'package:twosoul_multipz/utils/widget/common_dropdown.dart';
+import 'package:twosoul_multipz/utils/widget/common_drop.dart';
 import 'package:twosoul_multipz/utils/widget/common_range_slider.dart';
 import 'package:twosoul_multipz/utils/widget/common_slider.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+import 'package:twosoul_multipz/utils/widget/error_message.dart';
 
-import '../utils/widget/common_dob_field.dart';
+import '../Network/bloc/get_religion/get_religion_event.dart';
+import '../Network/bloc/get_sexuality/get_sexuality_event.dart';
+
 
 
 ///03-06-2022
@@ -19,20 +30,35 @@ class FilterScreen extends StatefulWidget {
   State<FilterScreen> createState() => _FilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends State<FilterScreen> with TickerProviderStateMixin  {
   FocusNode dd = FocusNode();
   FocusNode mm = FocusNode();
   FocusNode yy = FocusNode();
   TextEditingController dateController = TextEditingController();
   TextEditingController monthController = TextEditingController();
   TextEditingController yearController = TextEditingController();
-  double _heightRangeValue = 101;
+  double distanceValue = 75;
+  int? selectedSexualityId;
+  var sexualityDataSelected;
+  int? selectedReligionId;
+  var selectedReligion;
   TextEditingController locationController = TextEditingController();
-  RangeValues distanceValue = const RangeValues(10, 75);
   RangeValues ageValue = const RangeValues(20, 30);
-  RangeValues heightValue = const RangeValues(156, 175);
-  String selectedSexuality = 'Homosexual';
-  String selectedReligion = 'Not Important';
+  RangeValues heightValue = const RangeValues(116, 175);
+  late TabController lookingForController;
+  late TabController genderController;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    lookingForController = TabController(vsync: this, length: 3);
+    genderController = TabController(vsync: this, length: 3);
+    context.read<GetSexualityBloc>().add(GetSexualityEvents.fetchData);
+    context.read<GetReligionBloc>().add(GetReligionEvents.fetchData);
+
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
@@ -66,13 +92,13 @@ class _FilterScreenState extends State<FilterScreen> {
         Expanded(child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           child: SizedBox(
-            height: 100.vh,
+            height: 90.vh,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ///Location TextField
-                CommonTextView(
+               /* CommonTextView(
                   location,
                   fontSize: 14.sp,fontFamily: raidProRegular,
                 ),
@@ -97,7 +123,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                ),
+                ),*/
                 ///Interested In
                 CommonTextView(interestedIn,fontSize: 14.sp,fontFamily: raidProRegular,),
                 Theme(
@@ -114,6 +140,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),
                     child:   DefaultTabController(
                       length: 3, child:  TabBar(
+                      controller: genderController,
                       unselectedLabelStyle: const TextStyle(color: Colors.white),
                       labelColor: Colors.white,
                       indicatorSize: TabBarIndicatorSize.tab,
@@ -143,65 +170,35 @@ class _FilterScreenState extends State<FilterScreen> {
                       fontSize: 14.sp,fontFamily: raidProRegular,
                     ),
                     CommonTextView(
-                        '${distanceValue.start.toInt()} - ${distanceValue.end.toInt()} km.     ',
+                        '${distanceValue.toInt()} km.     ',
                         color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
                   ],
                 ),
+                CommonSlider(value: distanceValue, onChanged: (value) {
+                  setState(() {
+                    distanceValue = value;
+                  });
+                }, max: 0, min: 200),
+                ///Age TextField
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CommonTextView(age,fontFamily: raidProRegular,fontSize: 14.sp),
+                    CommonTextView(
+                        '${ageValue.start.toInt()} - ${ageValue.end.toInt()}     ',
+                        color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+
+                  ],
+                ),
                 CommonRangeSlider(
-                    value: distanceValue,
+                    value: ageValue,
                     onChanged: (RangeValues value) {
                       setState(() {
-                        distanceValue = value;
+                        ageValue = value;
                       });
                     },
                     max: 100,
                     min: 1),
-                ///Age TextField
-                CommonTextView(age,fontFamily: raidProRegular,fontSize: 14.sp),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    DOBTextField(
-                      focusNode: dd,
-                      onChanged: (value){
-                        if(dateController.text.length == 2){
-                          FocusScope.of(context).requestFocus(mm);
-                        }
-                      },
-                      textInputAction: TextInputAction.next,
-                      maxLength: 2,
-                      hintText: 'DD',
-                      controller: dateController,
-                    ),
-                    DOBTextField(
-                      focusNode: mm,
-                      onChanged: (value){
-                        if(monthController.text.length == 2){
-                          FocusScope.of(context).requestFocus(yy);
-                        }else if(monthController.text.isEmpty){
-                          FocusScope.of(context).requestFocus(dd);
-                        }
-                      },
-                      textInputAction: TextInputAction.next,
-                      maxLength: 2,
-                      hintText: 'MM',
-                      controller: monthController,
-                    ), DOBTextField(
-                      focusNode: yy,
-                      onChanged: (value){
-                        if(yearController.text.length == 4){
-                          yy.unfocus();
-                        }else if(yearController.text.isEmpty){
-                          FocusScope.of(context).requestFocus(mm);
-                        }
-                      },
-                      textInputAction: TextInputAction.done,
-                      maxLength: 4,
-                      hintText: 'YYYY',
-                      controller: yearController,
-                    ),
-                  ],
-                ),
                 ///Height slider
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,33 +207,93 @@ class _FilterScreenState extends State<FilterScreen> {
                         height,
                         fontSize: 14.sp,color: Colors.white,fontFamily: raidProRegular
                     ),
-                    CommonTextView('${_heightRangeValue.toInt()} cm     ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
+                    CommonTextView('${heightValue.start.toInt()} - ${heightValue.end.toInt()} km     ',color: pinkColor,fontSize: 14.sp,fontFamily: displayRegular),
 
                   ],
                 ),
-                CommonSlider(value: _heightRangeValue, onChanged: (value) {
-                  setState(() {
-                    _heightRangeValue = value;
-                  });
-                }, max: 0, min: 200),
+                CommonRangeSlider(
+                    value: heightValue,
+                    onChanged: (RangeValues value) {
+                      setState(() {
+                        heightValue = value;
+                      });
+                    },
+                    max: 200,
+                    min: 100),
                 ///Sexuality Drop Down
                 CommonTextView(
                   sexuality,
                   fontSize: 14.sp,fontFamily: raidProRegular,
                 ),
-                CommonDropDownButton(
-                    item: sexualityList,
-                    onChanged: (String value) {
-                      setState(() {
-                        selectedSexuality = value;
-                      });
-                    },
-                    value: selectedSexuality),
+                BlocBuilder<GetSexualityBloc, ViewState>(
+                    builder: (BuildContext context, ViewState state) {
+                      if (state is ErrorState) {
+                        final error = state.error;
+                        return ErrorMessage(
+                            error: '${error.message}\nTap to Retry.',
+                            callBack: () {});
+                      } else if (state is LoadingState) {
+                        return const CustomLoader();
+                      } else if (state is Empty) {
+                        return ErrorMessage(
+                            error: '${state.msg}', callBack: () {});
+                      }
+                      if (state is LoadedState) {
+                        return state.getSexualityResponse!.data != null
+                            ? CommonDrop(
+                          hintText: '$select $sexuality',
+                          item: state.getSexualityResponse!.data!,
+                          onChanged: (value) {
+                            setState(() {
+                              sexualityDataSelected = value;
+                              selectedSexualityId =
+                                  sexualityDataSelected.id;
+                            });
+                          },
+                          value: sexualityDataSelected,
+                        )
+                            : Container();
+                      }
+                      return const Center(
+                          child: CircularProgressIndicator(
+                            color: pinkColor,
+                          ));
+                    }),
                 ///Religion Drop Down
                 CommonTextView(religion,fontSize: 14.sp,fontFamily: raidProRegular,),
-                CommonDropDownButton(item: religionList, onChanged: (String value){setState(() {
-                  selectedReligion = value;
-                });}, value: selectedReligion),
+                BlocBuilder<GetReligionBloc, ViewState>(
+                    builder: (BuildContext context, ViewState state) {
+                      if (state is ErrorState) {
+                        final error = state.error;
+                        return ErrorMessage(
+                            error: '${error.message}\nTap to Retry.',
+                            callBack: () {});
+                      } else if (state is LoadingState) {
+                        return const CustomLoader();
+                      } else if (state is Empty) {
+                        return ErrorMessage(
+                            error: '${state.msg}', callBack: () {});
+                      }
+                      if (state is LoadedState) {
+                        return state.getReligionResponse!.data != null
+                            ? CommonDrop(
+                          hintText: '$select $religion',
+                          item: state.getReligionResponse!.data!,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedReligion = value;
+                              selectedReligionId = selectedReligion.id;
+                            });
+                          },
+                          value: selectedReligion,
+                        )
+                            : Container();
+                      }
+                      return const Center(
+                          child: CircularProgressIndicator(
+                            color: pinkColor,
+                          ));
+                    }),
                ///Looking for
                CommonTextView(lookingFor,fontSize: 14.sp,fontFamily: raidProRegular,),
                 Theme(
@@ -253,6 +310,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),
                     child:   DefaultTabController(
                       length: 3, child:  TabBar(
+                      controller: lookingForController,
                       unselectedLabelStyle: const TextStyle(color: Colors.white),
                       labelColor: Colors.white,
                       indicatorSize: TabBarIndicatorSize.tab,
@@ -275,7 +333,20 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                 ),
                 SizedBox(height: 2.vh,),
-                CommonButton(btnText: btnTextApply,onPressed: (){},),
+                CommonButton(btnText: btnTextApply,onPressed: (){
+                  context.read<FilterDataBloc>().add(FetchFilterData(FilterDataRequestModel(
+                    lookingFor: lookingForController.index ,
+                    sexualityId: selectedSexualityId,
+                    religionId: selectedReligionId,
+                    distance: distanceValue.toInt(),
+                    ageStart: ageValue.start.toInt(),
+                    ageEnd: ageValue.end.toInt(),
+                    heightStart: heightValue.start.toInt(),
+                    heightEnd: heightValue.end.toInt(),
+                    interestedIn: genderController.index == 0 ? "male" : genderController.index == 1 ? "female" : "both",
+                  )));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomBar(isFilter: true)));
+                },),
                 SizedBox(height: 2.vh,),
               ],
             ),

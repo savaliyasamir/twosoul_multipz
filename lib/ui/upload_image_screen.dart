@@ -2,12 +2,14 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/user_multi_image/user_multi_image_bloc.dart';
+import 'package:twosoul_multipz/Network/model/request%20model/user_multi_image_request_model.dart';
 import 'package:twosoul_multipz/ui/enable_location_screen.dart';
 import 'package:twosoul_multipz/ui/more_information_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
@@ -16,6 +18,11 @@ import 'package:twosoul_multipz/utils/widget/common_button.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
 import 'package:http/http.dart' as http;
 
+import '../Network/bloc/user_multi_image/user_multi_image_event.dart';
+
+
+List finalImageList = [];
+List<XFile> imagePaths = [];
 class UploadImageScreen extends StatefulWidget {
   const UploadImageScreen({Key? key}) : super(key: key);
 
@@ -39,23 +46,39 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
     super.initState();
       determinePosition();
   }
-
+/// convert image
+  convert(image, String key) {
+    var multipartImage;
+    if (null != image) {
+      image = File(image.path);
+      Uint8List bytes = image.readAsBytesSync();
+      ByteData byteData = ByteData.view(bytes.buffer);
+      List<int> imageData = byteData.buffer.asUint8List();
+      multipartImage = http.MultipartFile.fromBytes(key, imageData,
+          filename: 'image', contentType: MediaType("image", "jpg"));
+    }
+    return multipartImage;
+  }
 
   ///get Image into camara
   Future getImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       imageList.add(File(image!.path));
+      imagePaths.add(image);
       Navigator.pop(context);
+      print(File(image.path.toString()));
     });
   }
+
 ///get Image into gallery
+
   Future getGalleryImage() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       imageList.add(File(image!.path));
       Navigator.pop(context);
-
+      imagePaths.add(image);
     });
   }
 
@@ -154,6 +177,15 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
           ),
           SizedBox(height: 13.vh,),
           CommonButton(btnText: btnContinue,onPressed: (){
+            finalImageList = [];
+            for (var element in imagePaths) {
+              var multiImageList = convert(
+                  element, "image[${imagePaths.indexOf(element)}]");
+              finalImageList.add(multiImageList);
+            }
+            context.read<UserMultiImageBloc>().add(FetchData(UserMultiImageRequestModel(
+              image: finalImageList
+            )));
             serviceEnabled ?
               Navigator.push(context, MaterialPageRoute(builder: (context) => const MoreInformationScreen())) :
             Navigator.push(context, MaterialPageRoute(builder: (context) => const EnableLocationScreen()));

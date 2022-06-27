@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/choose_mode/choose_mode_bloc.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
+
+import '../Network/bloc/choose_mode/choose_mode_event.dart';
 
 
 class ChooseModeScreen extends StatefulWidget {
@@ -73,6 +77,9 @@ class _ChooseModeScreenState extends State<ChooseModeScreen> {
           ),
           SizedBox(height: 5.vh),
           CommonButton(onPressed: (){
+            context.read<ChooseModeBloc>().add(
+                FetchData(
+                    selectedMode == "Date" ? "0" : selectedMode == "Relationship" ? "1" : "2"));
             Navigator.pop(context);
           }, btnText: btnContinueWithDate),
           

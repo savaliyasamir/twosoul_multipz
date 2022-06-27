@@ -6,11 +6,13 @@ import 'package:twosoul_multipz/utils/constants.dart';
 class CommonTextField extends StatelessWidget{
   String hintText;
   TextEditingController controller;
-  CommonTextField({Key? key, required this.hintText,required this.controller}) : super(key: key);
+  TextInputType? keyboardType;
+  CommonTextField({Key? key, required this.hintText,required this.controller,this.keyboardType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType ?? TextInputType.text,
       controller: controller,
       cursorColor: lightGreyColor,
       style:  TextStyle(color: white50,fontSize: 12.sp),

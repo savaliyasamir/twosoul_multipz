@@ -7,8 +7,9 @@ class CommonDropDownButton extends StatefulWidget{
  String value;
  List<String> item;
  Function  onChanged;
+ bool? enable;
 
- CommonDropDownButton({Key? key, required this.item, required this.onChanged,required this.value}) : super(key: key);
+ CommonDropDownButton({Key? key,this.enable,required this.item, required this.onChanged,required this.value}) : super(key: key);
 
   @override
   State<CommonDropDownButton> createState() => _CommonDropDownButtonState();

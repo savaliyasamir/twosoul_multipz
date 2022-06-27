@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/main.dart';
 import 'package:twosoul_multipz/ui/edit_profile_screen.dart';
 import 'package:twosoul_multipz/ui/setting_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
@@ -33,12 +34,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     clipBehavior: Clip.antiAlias,
                     height: 40.vw,
                     width: 40.vw,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: pinkColor),
-                    child: Image.asset('assets/image/Rectangle 129.png',fit: BoxFit.cover,),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: Image.network("${getStorage.read(getProfilePhoto)}",fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return const CustomLoader();
+                      },
+                    ),
                   ),
                 ),
-                Center(child: CommonTextView("Disha Smith, 23",fontSize: 20.sp,fontFamily: displayMedium)),
-                Center(child: CommonTextView('Self employed',color: white50,fontSize: 16.sp,fontFamily: displayRegular,)),
+                Center(child: CommonTextView("${getStorage.read(getName)}, ${getStorage.read(getAge)}",fontSize: 20.sp,fontFamily: displayMedium)),
+                Center(child: CommonTextView("${getStorage.read(getDesignation) ?? ""} ",color: white50,fontSize: 16.sp,fontFamily: displayRegular,)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

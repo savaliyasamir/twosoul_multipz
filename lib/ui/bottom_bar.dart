@@ -1,27 +1,59 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/main.dart';
 import 'package:twosoul_multipz/ui/chat_screen.dart';
 import 'package:twosoul_multipz/ui/comunity_screen.dart';
 import 'package:twosoul_multipz/ui/discover_screen.dart';
 import 'package:twosoul_multipz/ui/profile_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
+import 'package:twosoul_multipz/utils/firebase_constants.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
+  bool isFilter;
+   BottomBar({Key? key, this.isFilter = false}) : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends State<BottomBar>  with WidgetsBindingObserver{
   int index = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    DiscoverScreen(),
-    CommunityScreen(),
-    ChatScreen(),
-    ProfileScreen(),
-  ];
+  List<Widget>? _widgetOptions;
+     @override
+  void initState(){
+       WidgetsBinding.instance.addObserver(this);
+       isOnlineMethod(true);
+       super.initState();
+         _widgetOptions = <Widget>[
+         DiscoverScreen(filter: widget.isFilter),
+         const CommunityScreen(),
+         const ChatScreen(),
+         const ProfileScreen(),
+       ];
+     }
+  isOnlineMethod(isOnline) {
+    FirebaseFirestore.instance
+        .collection(FirestoreConstants.pathUserCollection)
+        .doc(getStorage.read('current_uid').toString())
+        .update({"isOnline": isOnline});
+  }
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        isOnlineMethod(true);
+        break;
+      case AppLifecycleState.paused:
+        isOnlineMethod(false);
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.detached:
+        break;
+    }
+  }
   Future<bool> showExitPopup() async {
     return await  showDialog(
       context: context,
@@ -117,7 +149,7 @@ class _BottomBarState extends State<BottomBar> {
         }
       },
       child: Scaffold(
-        body: _widgetOptions.elementAt(index),
+        body: _widgetOptions!.elementAt(index),
         backgroundColor: backGroundColor,
         bottomNavigationBar: Container(
           height: 16.vw,

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/Network/bloc/snooze/snooze_bloc.dart';
+import 'package:twosoul_multipz/Network/bloc/snooze/snooze_event.dart';
+import 'package:twosoul_multipz/Network/repository/repository.dart';
+import 'package:twosoul_multipz/ui/choose_language_screen.dart';
 import 'package:twosoul_multipz/ui/choose_mode_screen.dart';
 import 'package:twosoul_multipz/ui/contact_faq_screen.dart';
+import 'package:twosoul_multipz/ui/login_screen.dart';
+import 'package:twosoul_multipz/ui/match_friend_request.dart';
+import 'package:twosoul_multipz/ui/sign_in_out/google.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_button.dart';
@@ -142,6 +150,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       child: CommonTextView(indefinitely,fontSize: 14.sp,fontFamily: displayRegular,color: selectedOption == indefinitely ? yellowColor : Colors.white))),
                               SizedBox(height: 1.vh),
                               CommonButton(onPressed: (){
+                                context.read<SnoozeBloc>().add(FetchData(selectedOption == hours24 ? "0": selectedOption == hours72 ? "1" : "2"));
                                 Navigator.pop(context);
                               },btnText: selectedOption == '' ?btnCancel : btnOk),
                             ],
@@ -205,12 +214,31 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 SizedBox(height: 1.vh),
                 ///current location
-                CommonButtonWithSelection(
-                    btnText: currentLocation,
-                    selectionText: 'Houston,us>',
-                    onPressed: () {}),
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const MatchFriendRequest()));
+              },
+              child: Container(
+                width: 100.vw,
+                height: 6.vh,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: darkGreyColor
+                ),
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: Row(
+                  children: [
+                    CommonTextView("Match Request",color: Colors.white,fontFamily: displayRegular,fontSize: 16.sp,),
+                    const Spacer(),
+                    Icon(Icons.arrow_forward_ios_sharp,color: white50,size: 2.vh),
+                  ],
+                ),
+              ),
+            ),
                 SizedBox(height: 5.vh,),
-                settingsButton(icLanguage,chooseLanguage,(){}),
+                settingsButton(icLanguage,chooseLanguage,(){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChooseLanguageScreen(setting: true)));
+                }),
                 horizontalDivider(),
                 settingsButton(icSecurity,securityPrivacy,(){}),
                 horizontalDivider(),
@@ -218,9 +246,17 @@ class _SettingScreenState extends State<SettingScreen> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>const ContactFaqScreen()));
                 }),
                 horizontalDivider(),
-                settingsButton(icLogout,logOut,(){}),
+                settingsButton(icLogout,logOut,(){
+                  logout();
+                  signOut();
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
+                }),
                 horizontalDivider(),
-                settingsButton(icDeleteAccount,deleteAccount,(){}),
+                settingsButton(icDeleteAccount,deleteAccount,(){
+                  userAccountDelete();
+                  signOut();
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false);
+                }),
                 SizedBox(height: 3.vh,),
               ],
             ),

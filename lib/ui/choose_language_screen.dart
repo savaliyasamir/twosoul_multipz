@@ -6,6 +6,7 @@ import 'package:twosoul_multipz/Network/bloc/get_language/get_language_bloc.dart
 import 'package:twosoul_multipz/Network/bloc/get_language/get_language_event.dart';
 import 'package:twosoul_multipz/Network/bloc/set_language/set_language_bloc.dart';
 import 'package:twosoul_multipz/Network/bloc/set_language/set_language_event.dart';
+import 'package:twosoul_multipz/Network/model/request%20model/set_language_request_model.dart';
 import 'package:twosoul_multipz/Network/model/response%20model/get_language_response_model.dart';
 import 'package:twosoul_multipz/ui/upload_image_screen.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
@@ -16,7 +17,8 @@ import '../Network/view_state.dart';
 import '../utils/constants.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
-  const ChooseLanguageScreen({Key? key}) : super(key: key);
+  bool setting;
+   ChooseLanguageScreen({Key? key,  required this.setting}) : super(key: key);
 
   @override
   State<ChooseLanguageScreen> createState() => _ChooseLanguageScreenState();
@@ -37,10 +39,8 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
   Widget build(BuildContext context) {
     return  BaseScreen(
       child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 11.vh,
-          ),
           Center(
             child: Image.asset(
               icTwoSoul,
@@ -59,7 +59,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                       error: '${error.message}\nTap to Retry.', callBack: () {});
                 } else
                 if (state is LoadingState) {
-                  return const Center(child: CircularProgressIndicator(color: pinkColor,));
+                  return const CustomLoader();
                 } else if (state is Empty) {
                   return ErrorMessage(error: '${state.msg}', callBack: () {});
                 }
@@ -101,13 +101,13 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> {
                     ),
                   ));
                 }
-                return const Center(child: CircularProgressIndicator(color: pinkColor,));
+                return const CustomLoader();
             }
           ),
           SizedBox(height: 10.vh,),
           CommonButton(btnText: btnContinue,onPressed: (){
-            context.read<SetLanguageBloc>().add(FetchData(selectedLanguage.substring(0,2)));
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const UploadImageScreen()));
+            context.read<SetLanguageBloc>().add(FetchLanguageData(SetLanguageRequestModel(code: selectedLanguage.substring(0,2))));
+            widget.setting ? Navigator.pop(context):Navigator.push(context, MaterialPageRoute(builder: (context) => const UploadImageScreen()));
           },)
         ],
       ),

@@ -21,6 +21,8 @@ class UserData {
     this.totalRewinds,
     this.dob,
     this.age,
+    this.distance,
+    this.distanceIn,
     this.height,
     this.designation,
     this.about,
@@ -44,7 +46,9 @@ class UserData {
   String? totalRewinds;
   String? dob;
   String? age;
-  String? height;
+  String? distance;
+  String? distanceIn;
+  int? height;
   String? designation;
   String? about;
   String? profileStatus;
@@ -56,25 +60,27 @@ class UserData {
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
     id: json["id"],
     name: json["name"],
-    lookingFor: json["looking_for"],
+    lookingFor: json["looking_for"] ?? "",
     relaitonshipStatus: json["relaitonship_status"],
     defaultLanguageCode: json["default_language_code"],
-    sexuality:SexualityData.fromJson(json["sexuality"]),
-    religion: ReligionData.fromJson(json["religion"]),
-    gender: json["gender"],
-    totalLikes: json["total_likes"],
-    totalSuperlikes: json["total_superlikes"],
-    totalRewinds: json["total_rewinds"],
-    dob: json["dob"],
+    sexuality:json["sexuality"] == null ? null :SexualityData.fromJson(json["sexuality"]),
+    religion: json["religion"] == null ? null :ReligionData.fromJson(json["religion"]),
+    gender: json["gender"] ,
+    totalLikes: json["total_likes"] ?? "",
+    totalSuperlikes: json["total_superlikes"] ?? "",
+    totalRewinds: json["total_rewinds"] ?? "",
+    dob: json["dob"] ?? "",
     age: json["age"],
+    distance: json["distance"] ?? "",
+    distanceIn: json["distanceIn"] ?? "",
     height: json["height"],
-    designation: json["designation"],
+    designation: json["designation"] ?? "",
     about: json["about"],
-    profileStatus: json["profile_status"],
-    country: CountryData.fromJson(json["country"]),
-    state: StateData.fromJson(json["state"]),
-    city: CityData.fromJson(json["city"]),
-    image: List<ImageData>.from(json["image"].map((x) => x)),
+    profileStatus: json["profile_status"] ?? "",
+    country:json["country"] == null ? null : CountryData.fromJson(json["country"]),
+    state:  json["state"]==null?null:StateData.fromJson(json["state"]),
+    city:json["city"] == null ? null :CityData.fromJson(json["city"]),
+    image:json["image"]!=null ? List<ImageData>.from(json["image"].map((x) => ImageData.fromJson(x))):[],
   );
 
   Map<String, dynamic> toJson() => {
@@ -91,6 +97,8 @@ class UserData {
     "total_rewinds": totalRewinds,
     "dob": dob,
     "age": age,
+    "distance":distance,
+    "distanceIn":distanceIn,
     "height": height,
     "designation": designation,
     "about": about,

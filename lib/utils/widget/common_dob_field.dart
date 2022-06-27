@@ -13,20 +13,23 @@ class DOBTextField extends StatelessWidget {
   TextInputAction textInputAction;
   FocusNode focusNode;
   Function onChanged;
+  bool? enable;
 
    DOBTextField(
-      {Key? key, required this.onChanged,required this.focusNode,required this.textInputAction, required this.hintText, required this.controller, required this.maxLength}) : super(key: key);
+      {Key? key, this.enable,required this.onChanged,required this.focusNode,required this.textInputAction, required this.hintText, required this.controller, required this.maxLength,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 12.vw,
       width: 27.vw,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: darkGreyColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
+        enabled:enable ?? true,
         style: TextStyle(color: white50,fontSize: 14.sp),
         onChanged: (value) {
           onChanged(value);
@@ -40,7 +43,7 @@ class DOBTextField extends StatelessWidget {
         cursorColor: pinkColor,
         decoration: InputDecoration(
           counterStyle: const TextStyle(color: Colors.transparent),
-          contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw),
+          contentPadding: EdgeInsets.only(left: 4.vw, right: 4.vw,bottom: 0.5.vh),
           hintText: hintText,
           hintStyle: TextStyle(color: greyColor,fontSize: 14.sp),
           border: InputBorder.none,

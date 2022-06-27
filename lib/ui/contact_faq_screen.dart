@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resize/resize.dart';
+import 'package:twosoul_multipz/ui/contact_us.dart';
+import 'package:twosoul_multipz/ui/faq_screen.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
 import 'package:twosoul_multipz/utils/widget/base_screen.dart';
 import 'package:twosoul_multipz/utils/widget/common_textview.dart';
@@ -35,8 +37,12 @@ class _ContactFaqScreenState extends State<ContactFaqScreen> {
            SizedBox(
              height: 2.vh,
            ),
-          commonContactButton(faq, (){}),
-           commonContactButton(contactUs, (){}),
+          commonContactButton(faq, (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const FaqDataScreen()));
+          }),
+           commonContactButton(contactUs, (){
+             Navigator.push(context, MaterialPageRoute(builder: (context) => const ContactUsScreen()));
+           }),
            commonContactButton(termsOfService, (){}),
            commonContactButton(privacyPolicy, (){}),
            commonContactButton(advertising, (){}),

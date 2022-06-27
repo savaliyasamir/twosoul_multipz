@@ -4,6 +4,7 @@ import 'package:resize/resize.dart';
 import 'package:twosoul_multipz/Network/bloc/login/login_event.dart';
 import 'package:twosoul_multipz/Network/model/request%20model/login_request.dart';
 import 'package:twosoul_multipz/main.dart';
+import 'package:twosoul_multipz/ui/bottom_bar.dart';
 import 'package:twosoul_multipz/ui/choose_language_screen.dart';
 import 'package:twosoul_multipz/ui/sign_in_out/google.dart';
 import 'package:twosoul_multipz/utils/constants.dart';
@@ -29,9 +30,33 @@ class _LoginScreenState extends State<LoginScreen> {
           if(state is LoadedState) {
             getStorage.write('LoginToken', state.loginResponse!.token.toString()).then((value) {
               print(getStorage.read('LoginToken'));
+              getStorage.write('login', true);
+
+              if(state.loginResponse!.data!.name ==""){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) =>  ChooseLanguageScreen(
+                      // ignore: unrelated_type_equality_checks
+                      setting: false,
+                    )));
+              }
+              else{
+                getStorage.write(getName, state.loginResponse!.data!.name);
+                getStorage.write(getCountry, state.loginResponse!.data!.country!.name);
+                getStorage.write(getCity, state.loginResponse!.data!.city!.name);
+                getStorage.write(getState, state.loginResponse!.data!.state!.name);
+                getStorage.write(getLookingFor, state.loginResponse!.data!.lookingFor);
+                getStorage.write(getDistance, state.loginResponse!.data!.distance);
+                getStorage.write(getProfilePhoto, state.loginResponse!.data!.image!.firstWhere((element) => element.isDefault == "1").imagename);
+                getStorage.write(getAge, state.loginResponse!.data!.age);
+                getStorage.write(getGender, state.loginResponse!.data!.gender);
+                getStorage.write(getSexuality, state.loginResponse!.data!.sexuality!.name);
+                getStorage.write(getHeight, state.loginResponse!.data!.height);
+                getStorage.write(getDob, state.loginResponse!.data!.dob);
+                getStorage.write(getReligion, state.loginResponse!.data!.religion!.name);
+                getStorage.write(getRelationShipStatus, state.loginResponse!.data!.relaitonshipStatus);
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => const ChooseLanguageScreen()));
-            }
+                  builder: (context) =>  BottomBar(isFilter: false,)));
+            }}
             );
           }
         },
@@ -78,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         error: '${error.message}\nTap to Retry.', callBack: () {});
                   } else
                   if (state is LoadingState) {
-                    return const Center(child: CircularProgressIndicator(color: pinkColor,));
+                    return const CustomLoader();
                   } else if (state is Empty) {
                     return ErrorMessage(error: '${state.msg}', callBack: () {});
                   }

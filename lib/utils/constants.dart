@@ -15,7 +15,38 @@ const String getCountryApiUrl = 'getCountry';
 const String getStateApiUrl = 'getState?country_id=';
 const String getCityApiUrl = 'getCity?';
 const String createProfileApiUrl = 'createProfile';
+const String homePageApiUrl = 'homePage';
+const String communityUserDataApiUrl = 'communityUserData';
+const String changeLookingForModeApiUrl = 'changeLookingForMode?looking_for=';
+const String addInvisibleTimeApiUrl = 'addInvisibleTime?invisible_type=0';
+const String editProfileApiUrl = "editProfile";
+const String userLogoutApiUrl = 'userLogout';
+const String userAccountDeleteApiUrl = 'userAccountDelete';
+const String filterDataApiUrl = 'filterUserData';
+const String sendMatchFriendRequestApiUrl = "sendMatchFriendRequest";
+const String addRewindApiUrl = "addRewind";
+const String acceptRejectMatchFriendRequestApiUrl = "acceptRejectMatchFriendRequest";
+const String receiveMatchFriendRequestApiUrl = "receiveMatchFriendRequest";
+const String contactUsApiUrl = "contactUs";
+const String getFaqDataApiUrl = "getFaqData";
 
+///getStorage const
+const String getCity = "city";
+const String getCountry = 'country';
+const String getName = 'name';
+const String getAge = "age";
+const String getProfilePhoto = "profile_image";
+const String getState = "state";
+const String getLookingFor = "lookingFor";
+const String getDistance = "distance";
+const String getGender = "gender";
+const String getSexuality = "sexuality";
+const String getHeight = "height";
+const String getDob = "dob";
+const String getReligion = "religion";
+const String getRelationShipStatus = "relationShipStatus";
+const String getDesignation = "designation";
+const String getAbout = "about";
 
 
 ///color
@@ -28,6 +59,7 @@ const Color greyColor = Color(0xff707070);
 const Color darkGreyColor = Color(0xff333333);
 const Color backGroundColor = Color(0xff262628);
 const Color blueColor = Color(0xff2E40E9);
+
 
 ///font_family
 const String displayMedium = 'SfUiDisplayMedium';
@@ -88,8 +120,8 @@ const String lookingFor = 'Looking For';
 const String btnDone = 'Done';
 const String cm = 'cm';
 const List<String> lookingForList = ['Friendship','Date','Relationship'];
-const  List<String> genderList = ['Male',  'Female',  'Both',];
-const  List<String> sexualityList = ['Homosexual',  'Straight',  'Gay','Queer'];
+const  List<String> genderList = ['male',  'female',  'both',];
+const  List<String> sexualityList = ['Homosexual','Straight',  'Gay','Queer'];
 const Color sliderTrackColor = Color(0xff999999);
 const List<String> relationshipStatusList = ['single','married','engaged','separated','divorced','other'];
 const List<String> religionList = ['Hindu','Sikh','Parsi','Jain','Muslim','Christianity','Not Important'];
@@ -98,6 +130,7 @@ const String state = 'State';
 const String selectState = 'Select State';
 const String country = 'Country';
 const String select = 'Select';
+const String dateOfBirth = "Date Of Birth";
 
 ///bottom_bar
 const String bottomBackGroundImage = 'assets/image/bottom_image.png';
@@ -155,6 +188,7 @@ TextStyle likeTextStyle = TextStyle(fontSize: 14.sp,color: Colors.white,fontFami
 const String setting = 'Setting';
 const String addMedia = 'Add Media';
 const String editProfile = 'Edit Profile';
+const String designation = "Designation";
 const String likes = 'Likes';
 const String superLikes = 'super\nLikes';
 const String rewinds = 'Rewinds';
@@ -227,3 +261,22 @@ const String termsOfService = 'Terms of service';
 const String privacyPolicy ='Privacy Policy';
 const String advertising='Advertising';
 
+///match friend request screen
+const String matchRequest  = "Match Request";
+const String like = "Like";
+const String superLike  = "Super Like";
+const String icCheck = "assets/ic/ic_check.png";
+
+///loader
+class CustomLoader extends StatelessWidget{
+  const CustomLoader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Center(
+          child: Image.asset("assets/image/loader.gif",width: 15.vw,)),
+    );
+  }
+
+}
