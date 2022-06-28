@@ -33,7 +33,6 @@ import 'package:twosoul_multipz/Network/bloc/user_multi_image/user_multi_image_b
 import 'package:twosoul_multipz/Network/repository/repository.dart';
 import 'package:twosoul_multipz/ui/bottom_bar.dart';
 import 'package:twosoul_multipz/ui/login_screen.dart';
-import 'package:twosoul_multipz/ui/more_information_screen.dart';
 import 'package:twosoul_multipz/ui/no_internet_screen.dart';
 final getStorage = GetStorage();
 void main() async{
