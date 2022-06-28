@@ -31,6 +31,7 @@ class FirebaseUserModel {
       this.country,
       this.state,
       this.city,
+        this.image,
       this.isOnline});
 
   int? id;
@@ -55,6 +56,7 @@ class FirebaseUserModel {
   CountryData? country;
   StateData? state;
   CityData? city;
+  List<ImageData>? image;
   bool? isOnline;
 
   factory FirebaseUserModel.fromJson(Map<String, dynamic> json) =>
@@ -87,6 +89,7 @@ class FirebaseUserModel {
             : CountryData.fromJson(json["country"]),
         state: json["state"] == null ? null : StateData.fromJson(json["state"]),
         city: json["city"] == null ? null : CityData.fromJson(json["city"]),
+        image:json["image"]!=null ? List<ImageData>.from(json["image"].map((x) => ImageData.fromJson(x))):[],
         isOnline: json["isOnline"] ?? false,
       );
 
@@ -113,6 +116,7 @@ class FirebaseUserModel {
         "country": country!.toJson(),
         "state": state!.toJson(),
         "city": city!.toJson(),
+    "image": List<ImageData>.from(image!.map((x) => x)).toList(),
         "isOnline": isOnline
       };
 
@@ -139,6 +143,7 @@ class FirebaseUserModel {
     CountryData? country = doc.get("country");
     StateData? state = doc.get("state");
     CityData? city = doc.get("city");
+    List<ImageData>? image = doc.get("image");
     bool? isOnline = doc.get("isOnline");
 
     return FirebaseUserModel(
@@ -164,6 +169,7 @@ class FirebaseUserModel {
       country: country,
       state: state,
       city: city,
+      image: image!.toList(),
       isOnline: isOnline,
     );
   }

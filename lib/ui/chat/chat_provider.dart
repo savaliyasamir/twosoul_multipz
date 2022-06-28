@@ -65,7 +65,7 @@ class ChatProvider {
         .collection(FirestoreConstants.pathMessageCollection)
         .add({
       FirestoreConstants.createdAt: FieldValue.serverTimestamp(),
-      FirestoreConstants.profilePhoto: otherUser.image!.firstWhere((element) => element.isDefault == "1").imagename,
+      FirestoreConstants.profilePhoto: otherUser.profilePhoto,
       FirestoreConstants.metadata: metadata,
       FirestoreConstants.name: otherUser.name.toString(),
       FirestoreConstants.updatedAt: DateTime.now().millisecondsSinceEpoch,
@@ -113,7 +113,6 @@ class ChatProvider {
         .collection(FirestoreConstants.pathMessageCollection)
         .where('userIds', arrayContains: currentUserId)
         .orderBy('updatedAt', descending: true);
-
 
     return collection.snapshots().asyncMap(
           (query) => processRoomsQuery(

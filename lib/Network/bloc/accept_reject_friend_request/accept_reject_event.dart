@@ -17,3 +17,5 @@ class FetchAcceptRejectData extends AcceptRejectEvents {
   @override
   String toString() => 'Accept Reject Friend Request: $acceptRejectRequestModel';
 }
+
+

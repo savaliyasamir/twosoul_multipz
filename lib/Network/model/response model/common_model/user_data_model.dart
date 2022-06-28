@@ -1,7 +1,9 @@
 
+import 'package:get_storage/get_storage.dart';
 import 'package:twosoul_multipz/Network/model/response%20model/common_model/city_data.dart';
 import 'package:twosoul_multipz/Network/model/response%20model/common_model/religion_data.dart';
 import 'package:twosoul_multipz/Network/model/response%20model/common_model/state_data.dart';
+import 'package:twosoul_multipz/main.dart';
 import 'country_data.dart';
 import 'image_data.dart';
 import 'sexuality_data.dart';
@@ -31,6 +33,7 @@ class UserData {
     this.state,
     this.city,
     this.image,
+    this.profilePhoto,
   });
 
   int? id;
@@ -56,6 +59,7 @@ class UserData {
   StateData? state;
   CityData? city;
   List<ImageData>? image;
+  String? profilePhoto;
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
     id: json["id"],
@@ -81,6 +85,7 @@ class UserData {
     state:  json["state"]==null?null:StateData.fromJson(json["state"]),
     city:json["city"] == null ? null :CityData.fromJson(json["city"]),
     image:json["image"]!=null ? List<ImageData>.from(json["image"].map((x) => ImageData.fromJson(x))):[],
+    profilePhoto: json['profilePhoto']??"",
   );
 
   Map<String, dynamic> toJson() => {
@@ -107,5 +112,6 @@ class UserData {
     "state": state!.toJson(),
     "city": city!.toJson(),
     "image": List<ImageData>.from(image!.map((x) => x)),
+    "profilePhoto": profilePhoto ?? "",
   };
 }

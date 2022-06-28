@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 getStorage.write(getDob, state.loginResponse!.data!.dob);
                 getStorage.write(getReligion, state.loginResponse!.data!.religion!.name);
                 getStorage.write(getRelationShipStatus, state.loginResponse!.data!.relaitonshipStatus);
+                getStorage.write("current_uid", state.loginResponse!.data!.id);
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) =>  BottomBar(isFilter: false,)));
             }}
